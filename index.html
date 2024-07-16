@@ -4,14 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        h1 {
+            text-align: center;
+            color: #cd2990;
+        }
+        #chatbox {
+            min-width: 1200px;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: scroll;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+        #chatbox p {
+            margin: 10px 0;
+        }
+        #userInput {
+            width: calc(100% - 90px);
+            padding: 20px 20px; 
+            margin: 20px 0; 
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px; 
+            font-size: 16px;
+        }
+        button {
+            width: 80px;
+            padding: 20px;
+            border: none;
+            background-color: #cd2990;
+            color: white;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 16px;
+            vertical-align: top; 
+        }
+        button:hover {
+            background-color: #cd2990;
+        }
+        #inputContainer {
+            display: inline-flex;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
     <h1>Simple Chatbot</h1>
     <div id="chatbox">
         <p><b>Bot:</b> Merhaba! Size nasıl yardımcı olabilirim?</p>
     </div>
-    <input id="userInput" type="text" placeholder="Mesajınızı buraya yazın">
-    <button onclick="sendMessage()">Gönder</button>
+    <div id="inputContainer">
+        <input id="userInput" type="text" placeholder="Mesajınızı buraya yazın">
+        <button onclick="sendMessage()">Gönder</button>
+    </div>
 
     <script>
         function sendMessage() {
@@ -29,6 +89,7 @@
                     var botMessage = document.createElement("p");
                     botMessage.innerHTML = "<b>Bot:</b> " + xhr.responseText;
                     chatbox.appendChild(botMessage);
+                    chatbox.scrollTop = chatbox.scrollHeight; 
                 }
             };
             xhr.send();
