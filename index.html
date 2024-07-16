@@ -76,6 +76,10 @@
     <script>
         function sendMessage() {
             var userText = document.getElementById("userInput").value;
+            if (userText.trim() === "") {
+                return; 
+            }
+
             var chatbox = document.getElementById("chatbox");
 
             var userMessage = document.createElement("p");
@@ -96,6 +100,13 @@
 
             document.getElementById("userInput").value = "";
         }
+
+        document.getElementById("userInput").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
     </script>
 </body>
 </html>
