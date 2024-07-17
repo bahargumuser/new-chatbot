@@ -1,6 +1,14 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import urllib.parse as urlparse
 import json
+from langchain.document_loaders import JSONLoader
+
+# JSON dosyasının yolu
+json_dataset_path = './responses.json'
+
+# JSON dosyasını yüklemek için JSONLoader
+loader = JSONLoader(json_dataset_path)
+data = loader.load()
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
@@ -21,9 +29,15 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.wfile.write(file.read())
 
     def simple_bot_response(self, text):
-        with open('responses.json', 'r', encoding='utf-8') as file:
-            responses = json.load(file)
-        return responses.get(text.lower(), "Üzgünüm, bu konuda size yardımcı olamıyorum.")
+        if text is None:
+            return "Lütfen bir mesaj girin."
+        
+        # Search for the response in the loaded data
+        for item in data['data']:
+            if item['question'].lower() in text.lower():
+                return item['response']
+        
+        return "Üzgünüm, bu konuda size yardımcı olamıyorum."
 
 def run(server_class=HTTPServer, handler_class=SimpleHTTPRequestHandler, port=8000):
     server_address = ('', port)
